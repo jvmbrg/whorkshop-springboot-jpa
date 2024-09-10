@@ -22,8 +22,7 @@ public class UserService {
 	public List<User> findAll(){
 		return repository.findAll();
 	}
-	/* Meteodo reponsavel por repassar a chamada do metodo findById para a camada repository
-	*  Aqui, o metodo retorna um usuario com base no id do cadastro.*/
+	// Meteodo reponsavel por repassar a chamada do metodo findById para a camada repository
 	public User findById(Long id) {
 		//O comando "Optional e representa valores que podem ou não estar estar presentes na chamada, evitando erro de NullPointException" 
 		Optional<User> obj = repository.findById(id);

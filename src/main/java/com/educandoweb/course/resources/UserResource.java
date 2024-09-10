@@ -32,6 +32,7 @@ public class UserResource {
 	}
 	
 	@GetMapping(value="/{id}")
+	//Aqui, o metodo retorna um usuario com base no id do cadastro.
 	public ResponseEntity <User> findById(@PathVariable Long id) {
 		User obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
