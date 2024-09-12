@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.educandoweb.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -14,8 +15,8 @@ import jakarta.persistence.Table;
 public class OrderItem implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@EmbeddedId
-	private OrderItemPK id;
+	@EmbeddedId //Sempre que uma for uma classe auxiliar de ID composto, tem que instanciar ela 
+	private OrderItemPK id = new OrderItemPK();
 	
 	private Integer quantity;
 	private Double price;
@@ -29,7 +30,7 @@ public class OrderItem implements Serializable{
 		this.quantity = quantity;
 		this.price = price;
 	}
-	
+	@JsonBackReference
 	public Order getOrder() {
 		return id.getOrder();
 	}
