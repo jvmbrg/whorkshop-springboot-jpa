@@ -37,4 +37,21 @@ public class UserService {
 		repository.deleteById(id);
 	}
 	
+	public User update(Long id, User obj) {
+		//User entity = repository.getReferenceById(id);
+		User entity = findById(id); //Esse metodo ainda não vai no banco de dados resgatar a informação, apenas prepara o objeto e manipula ele 
+		//para depois enviar para o banco de dados .
+		
+		//Foi necessario alterar o código para a chamada do método "findByID" pois ele estava rodando fora do hibernate em LazyLoad. 
+		//Usando o findById o hibernate inicia completamente a entidade e todas as suas propriedas
+		updateData(entity,obj);
+		return repository.save(entity);
+	}
+	private void updateData(User entity, User obj) {
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
+		
+	}
+	
 }
