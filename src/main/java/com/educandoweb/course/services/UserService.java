@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.User;
 import com.educandoweb.course.repositories.UserRepository;
+import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 /* Aqui no pacote serviços temos a classe UserService que é responsavel por gerir os servi
  * ços dos usuarios. Atraves do sistema de camadas de funções, essa classe é a que fica encarre
  * gada de receber as solicitações do controller e fazer a busca dentro do banco de dados
@@ -26,7 +27,8 @@ public class UserService {
 	public User findById(Long id) {
 		//O comando "Optional e representa valores que podem ou não estar estar presentes na chamada, evitando erro de NullPointException" 
 		Optional<User> obj = repository.findById(id);
-		return obj.get(); // o metodo get retorna um objeto do tipo User que estiver dentro do Optional.
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id)); // o metodo get retorna um objeto do tipo User que estiver dentro do Optional.
+		//Agora ele tenta chamar o User a partir do ID, caso tenha algum erro, ele lança uma exceção definida, no caso, o ResourceNotFound
 	}
 	
 	public User insert(User obj) { // Metodo para inserir no banco de dados um novo usuario
