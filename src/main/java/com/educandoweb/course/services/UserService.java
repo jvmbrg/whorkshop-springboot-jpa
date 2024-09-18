@@ -12,6 +12,8 @@ import com.educandoweb.course.entities.User;
 import com.educandoweb.course.repositories.UserRepository;
 import com.educandoweb.course.services.exceptions.DatabaseException;
 import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 /* Aqui no pacote serviços temos a classe UserService que é responsavel por gerir os servi
  * ços dos usuarios. Atraves do sistema de camadas de funções, essa classe é a que fica encarre
  * gada de receber as solicitações do controller e fazer a busca dentro do banco de dados
@@ -49,14 +51,17 @@ public class UserService {
 	}
 	
 	public User update(Long id, User obj) {
-		//User entity = repository.getReferenceById(id);
-		User entity = findById(id); //Esse metodo ainda não vai no banco de dados resgatar a informação, apenas prepara o objeto e manipula ele 
-		//para depois enviar para o banco de dados .
-		
-		//Foi necessario alterar o código para a chamada do método "findByID" pois ele estava rodando fora do hibernate em LazyLoad. 
-		//Usando o findById o hibernate inicia completamente a entidade e todas as suas propriedas
-		updateData(entity,obj);
-		return repository.save(entity);
+		try{//User entity = repository.getReferenceById(id);
+			User entity = findById(id); //Esse metodo ainda não vai no banco de dados resgatar a informação, apenas prepara o objeto e manipula ele 
+			//para depois enviar para o banco de dados .
+			
+			//Foi necessario alterar o código para a chamada do método "findByID" pois ele estava rodando fora do hibernate em LazyLoad. 
+			//Usando o findById o hibernate inicia completamente a entidade e todas as suas propriedas
+			updateData(entity,obj);
+			return repository.save(entity);
+		}catch(EntityNotFoundException e){
+			throw new ResourceNotFoundException(id);
+		}
 	}
 	private void updateData(User entity, User obj) {
 		entity.setName(obj.getName());
